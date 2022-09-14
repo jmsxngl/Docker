@@ -1,10 +1,10 @@
+# ========== Docker ==========
 # docker image
 docker image ls
 
 docker image pull redis:latest
 
 docker image rm redis:latest
-
 
 
 # docker container 
@@ -26,7 +26,6 @@ docker container rm dummyredis
 docker container rm dummyredis2
 
 
-
 # docker container log
 docker container create --name dummyredis redis:latest
 
@@ -37,10 +36,8 @@ docker container logs dummyredis
 docker container logs -f dummyredis
 
 
-
 # docker container exec
 docker container exec -i -t dummyredis /bin/bash
-
 
 
 # docker container port
@@ -49,27 +46,22 @@ docker image pull nginx:latest
 docker container create --name dummynginx --publish 8080:80 nginx:latest
 
 
-
 # docker container env
 docker image pull mongo:latest
 
 docker container create --name dummymongo --publish 27017:27017 --env MONGO_INITDB_ROOT_USERNAME=james --env MONGO_INITDB_ROOT_PASSWORD=james mongo:latest
 
 
-
 # docker container stats
 docker container stats
-
 
 
 # docker resource limit
 docker container create --name smallnginx --memory 100m --cpus 0.5 --publish 8081:80 nginx:latest
 
 
-
 # docker bind mounts
 docker container create --name mongodata --publish 27018:27017 --mount "type=bind,source=/Users/James/mongo-data,destination=/data/db" --env MONGO_INITDB_ROOT_USERNAME=james --env MONGO_INITDB_ROOT_PASSWORD=james mongo:latest
-
 
 
 # docker volume
@@ -80,12 +72,10 @@ docker volume create mongovolume
 docker volume rm mongovolume
 
 
-
 # docker container volume
 docker volume create mongodata
 
 docker container create --name mongodata --publish 27019:27017 --mount "type=volume,source=/mongodata,destination=/data/db" --env MONGO_INITDB_ROOT_USERNAME=james --env MONGO_INITDB_ROOT_PASSWORD=james mongo:latest
-
 
 
 # docker volume backup
@@ -114,7 +104,6 @@ docker container run --rm --name ubuntubackup --mount "type=bind,source=/Users/J
 docker container start mongovolume
 
 
-
 # docker volume restore
 docker volume create mongorestore
 
@@ -125,14 +114,12 @@ docker container create --name mongorestore --publish 27020:27017 --mount "type=
 docker container start mongorestore
 
 
-
 # docker network
 docker network ls
 
 docker network create --driver bridge dummynetwork
 
 docker network rm dummynetwork
-
 
 
 # docker container network
@@ -151,7 +138,6 @@ docker container start mongodbexpress
 docker network disconnect mongonetwork mongodb
 
 docker network connect mongonetwork mongodb
-
 
 
 # docker inspect
@@ -178,3 +164,48 @@ docker volume prune
 docker network prune
 
 docker system prune
+
+
+
+# ========== Dockerfile ==========
+# FROM instruction
+docker build -t jmsxngl/from:1.0.0 from
+
+docker image ls
+
+
+
+# RUN instruction
+docker build -t jmsxngl/run:1.0.0 run
+
+docker build -t jmsxngl/run:1.0.0 run --progress=plain --no-cache
+
+
+
+# CMD instruction
+docker build -t jmsxngl/command command
+
+docker image inspect jmsxngl/command
+
+docker container create --name command jmsxngl/command
+
+docker container start command
+
+docker container logs command
+
+
+
+# LABEL instruction
+docker image build -t jmsxngl/label label
+
+docker image inspect jmsxngl/label
+
+
+# ADD instruction
+docker build -t jmsxngl/add add
+
+docker container create --name add jmsxngl/add
+
+docker container start add
+
+docker container logs add
